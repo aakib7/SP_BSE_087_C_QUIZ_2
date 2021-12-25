@@ -5,7 +5,7 @@ const { User } = require("../models/User");
 async function auth(req,res,next){
     let token = req.header("x-auth-token");
     if (!token) {
-        return res.status(400).send("Token Not Provided");
+        return res.status(400).send("Not Login");
     }
     else{
     try {
