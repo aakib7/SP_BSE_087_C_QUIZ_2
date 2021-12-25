@@ -5,6 +5,7 @@ var bcrypt = require('bcryptjs');
 const _ = require('lodash');
 const jwt = require('jsonwebtoken');
 const config = require('config');
+// const cors = require('cors');
 
 
 // Register new User
