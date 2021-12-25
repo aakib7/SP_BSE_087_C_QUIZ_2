@@ -3,10 +3,13 @@ var router = express.Router();
 var { Mobile } = require("../../../models/Mobile");
 const validateMobile = require("../../../middlewares/validateMobile");
 const auth = require("../../../middlewares/auth");
+const admin = require("../../../middlewares/admin");
+
 
 
 // get all Mobiles
-router.get("/", auth ,async function (req, res, next) {
+router.get("/",async function (req, res, next) {
+  console.log(req.user);
   let mobile = await Mobile.find();
   return res.send(mobile);
 });
@@ -24,7 +27,9 @@ router.get("/:id", async function (req, res, next) {
 });
 
 // update one product
-router.put('/:id', validateMobile ,async (req,res)=>{
+// frist check login (auth)
+// then check role is admin (admin)
+router.put('/:id', auth, admin, validateMobile ,async (req,res)=>{
   try{
     let mobile = await Mobile.findById(req.params.id);
     if(!mobile) {
@@ -42,7 +47,9 @@ router.put('/:id', validateMobile ,async (req,res)=>{
   }
 });
 // delete mobile
-router.delete("/:id", async function (req, res, next) {
+// frist check login (auth)
+// then check role is admin (admin)
+router.delete("/:id", auth, admin, async function (req, res, next) {
   try {
     let mobile = await Mobile.findByIdAndDelete(req.params.id);
     if(!mobile) {
@@ -54,7 +61,10 @@ router.delete("/:id", async function (req, res, next) {
   }
 });
 // insert data
-router.post("/", validateMobile ,async function (req, res, next) {
+// frist check login (auth)
+// then check role is admin (admin)
+// then validate mobile 
+router.post("/", auth, admin, validateMobile ,async function (req, res, next) {
     let mobile = new Mobile(req.body);
     console.log(req.body);
     await mobile.save();

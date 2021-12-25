@@ -8,6 +8,9 @@ const config = require('config');
 
 
 // Register new User
+router.get('/register', (req, res) => {
+  res.render('register');
+});
 router.post('/register', async(req,res) => {
    let user = await User.findOne({ email:req.body.email });
    if(user){
