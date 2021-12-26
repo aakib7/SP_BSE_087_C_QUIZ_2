@@ -42,8 +42,11 @@ router.post('/register', async(req,res) => {
     user.password = await bcrypt.hash(user.password, salt);
 
     await user.save();
-    // res.send(_.pick(user,["user_name","email"]));
-    res.redirect('/login');
+     let token = jwt.sign({ _id: user._id, name: user.user_name,role:user.role}, config.get('jwtPrivateKey'));
+     let dataReturn = {
+       user_name: user.user_name,email: user.email,token: token
+     }
+    res.send(dataReturn);
    }   
 });
 
@@ -73,6 +76,4 @@ router.post('/login',async(req,res)=>{
 router.get('/profile', auth ,(req, res)=>{
 res,res.render('profile');
 });
-
-
 module.exports = router;
