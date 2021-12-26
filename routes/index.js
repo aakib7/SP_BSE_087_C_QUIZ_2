@@ -65,10 +65,8 @@ router.post('/login',async(req,res)=>{
         return res.status(401).send("Incorect Password");
       }
       else{
-        let token = jwt.sign({_id:user._id,name:user.user_name},config.get('jwtPrivateKey'));
-        // res.send("Login Successfully");
+        let token = await jwt.sign({_id:user._id,name:user.user_name},config.get('jwtPrivateKey'));
         res.send(token);
-        // res.redirect('/profile');
       }
     }
 
